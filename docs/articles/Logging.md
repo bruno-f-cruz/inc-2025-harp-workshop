@@ -38,6 +38,7 @@ It is critical that the messages logged from the device are sufficient to recons
 In order to use [`harp-python`](https://harp-tech.org/articles/python.html) data interface to its full extent, we need to provide a `device.yml` configuration file. This file will contain the device's register map, which is necessary to interpret the data logged from the device.
 
 This file can be manually added to the root of the logged data folder, or it can be saved in Bonsai:
+
 - To the previous examples, in a different branch:
 - Add a `DeviceMetadata(Harp.Behavior)` operator
 - Add a `WriteAllText` operator to save the metadata to a file named `device.yml`
@@ -46,10 +47,9 @@ This file can be manually added to the root of the logged data folder, or it can
 ![LoggingMetadata](~/workflows/LoggingMetadata.bonsai)
 :::
 
-We can wrap all the previous patterns in a single grouped node:
+Or using the `DeviceDataWriter` operator for an easier experience:
 
 :::workflow
 ![CompleteLoggingPattern](~/workflows/CompleteLoggingPattern.bonsai)
 :::
 
-Stay tuned for updates as, while the logging spec has been defined, the `Bonsai.Harp` library will soon be updated to include operators to more easily implement these patterns!
