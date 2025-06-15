@@ -1,15 +1,24 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<WorkflowBuilder Version="2.8.1"
+<WorkflowBuilder Version="2.9.0"
                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                 xmlns:beh="clr-namespace:Harp.Behavior;assembly=Harp.Behavior"
                  xmlns:harp="clr-namespace:Bonsai.Harp;assembly=Bonsai.Harp"
-                 xmlns:sys="clr-namespace:System;assembly=mscorlib"
+                 xmlns:beh="clr-namespace:Harp.Behavior;assembly=Harp.Behavior"
                  xmlns:rx="clr-namespace:Bonsai.Reactive;assembly=Bonsai.Core"
                  xmlns="https://bonsai-rx.org/2018/workflow">
   <Workflow>
     <Nodes>
-      <Expression xsi:type="SubscribeSubject">
-        <Name>BehaviorEvents</Name>
+      <Expression xsi:type="Disable">
+        <Builder xsi:type="SubscribeSubject">
+          <Name>BehaviorEvents</Name>
+        </Builder>
+      </Expression>
+      <Expression xsi:type="harp:CreateMessage">
+        <harp:MessageType>Write</harp:MessageType>
+        <harp:Payload xsi:type="harp:CreateMessagePayload">
+          <harp:Address>32</harp:Address>
+          <harp:PayloadType>U8</harp:PayloadType>
+          <harp:Value>0</harp:Value>
+        </harp:Payload>
       </Expression>
       <Expression xsi:type="beh:Parse">
         <harp:Register xsi:type="beh:TimestampedOutputSet" />
@@ -17,14 +26,9 @@
       <Expression xsi:type="MemberSelector">
         <Selector>Value</Selector>
       </Expression>
-      <Expression xsi:type="BitwiseAnd">
+      <Expression xsi:type="HasFlag">
         <Operand xsi:type="WorkflowProperty" TypeArguments="beh:DigitalOutputs">
-          <Value>None</Value>
-        </Operand>
-      </Expression>
-      <Expression xsi:type="GreaterThan">
-        <Operand xsi:type="WorkflowProperty" TypeArguments="sys:UInt16">
-          <Value>0</Value>
+          <Value>DO3</Value>
         </Operand>
       </Expression>
       <Expression xsi:type="rx:Condition">
@@ -53,8 +57,8 @@
     <Edges>
       <Edge From="0" To="1" Label="Source1" />
       <Edge From="1" To="2" Label="Source1" />
-      <Edge From="1" To="6" Label="Source1" />
       <Edge From="2" To="3" Label="Source1" />
+      <Edge From="2" To="6" Label="Source1" />
       <Edge From="3" To="4" Label="Source1" />
       <Edge From="4" To="5" Label="Source1" />
       <Edge From="5" To="7" Label="Source1" />

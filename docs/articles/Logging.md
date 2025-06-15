@@ -3,8 +3,8 @@
 ## Logging messages from device
 
 - Subscribe to `BehaviorEvents`
-- Add a `GroupBy(Bonsai.Harp)` operator
-- Add a `MessageWriter` operator. Set the `FileName` property to `MyDevice.harp/Behavior.bin`
+- Add a `Device.DataWriter(Harp.Behavior)` operator
+- Set the `Path` property to the folder where you want to save the data (e.g. `./data/MyDevice.harp`)
 
 :::workflow
 ![Logging](~/workflows/Logging.bonsai)
@@ -32,24 +32,3 @@ It is critical that the messages logged from the device are sufficient to recons
 
 > [!IMPORTANT]
 > In your experiments, always validate that your logging routine has fully initialized before requesting a reading dump from the device. Failure to do so may result in missing data.
-
-## Completing the logging pattern with the `device.yml` configuration file
-
-In order to use [`harp-python`](https://harp-tech.org/articles/python.html) data interface to its full extent, we need to provide a `device.yml` configuration file. This file will contain the device's register map, which is necessary to interpret the data logged from the device.
-
-This file can be manually added to the root of the logged data folder, or it can be saved in Bonsai:
-
-- To the previous examples, in a different branch:
-- Add a `DeviceMetadata(Harp.Behavior)` operator
-- Add a `WriteAllText` operator to save the metadata to a file named `device.yml`
-
-:::workflow
-![LoggingMetadata](~/workflows/LoggingMetadata.bonsai)
-:::
-
-Or using the `DeviceDataWriter` operator for an easier experience:
-
-:::workflow
-![CompleteLoggingPattern](~/workflows/CompleteLoggingPattern.bonsai)
-:::
-

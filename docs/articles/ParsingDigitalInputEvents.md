@@ -27,13 +27,11 @@ In other words, each bit of the integer value of the register represents the sta
 Conversely, if `DI3` and `DIPort0` are `High`, we would get:
 `00001001` = `9` = `0x9`
 
-- To extract the state of a specific line, use the `BitwiseAnd` operator and `Value` to the line you want to extract (e.g. `DI3`). To convert to a `Boolean`, use the `GreaterThan` operator with `Value` set to 0.
+- To extract the state of a specific line, use the `HasValue` operator and set `Value` to the line you want to extract (e.g. `DI3`).
 - Because the state of `DigitalInputState` changes when ANY of the lines change, we tend to use the `DistinctUntilChanged` to only propagate the message if the state of the line of interest changes.
-- Finally, to trigger a certain behavior on a specific edge, we add a `Condition` operator to only allow `True` values to pass through. The behavior can easily bit inverted by adding a `BitWiseNot` operator before, or inside, the condition operator.
+- Finally, to trigger a certain behavior on a specific edge, we add a `Condition` operator to only allow `True` values to pass through. The behavior can easily be inverted by adding a `BitWiseNot` operator before, or inside, the condition operator.
 
 :::workflow
 ![ParseDigitalInputState](~/workflows/ParseDigitalInputState.bonsai)
 :::
 
-> [!NOTE]
-> In most situations listening to the `Event` propagated by the register is sufficient, and prefered, to keep track of the full state history of the device. Alternatively, one could also switch to a "pooling"-like strategy by using a `Timer` operator that periodically asks for a `Read` from the register.

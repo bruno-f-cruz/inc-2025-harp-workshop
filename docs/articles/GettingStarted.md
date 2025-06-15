@@ -15,11 +15,21 @@ If you have any questions or find any issues, please open an Issue on the [works
 
 ## More documentation
 
+### Community
+
+- [Q&A, community, forum](https://github.com/orgs/harp-tech/discussions)
+- [Bonsai documentation](https://bonsai-rx.org/docs/articles/observables.html)
+
+### Spec
+
 - [Harp Protocol](https://harp-tech.org/protocol/BinaryProtocol-8bit.html)
 - [Harp Device](https://harp-tech.org/protocol/Device.html)
-- [Using the Bonsai.Harp packages](https://harp-tech.org/articles/intro.html)
 - [Device technical references](https://harp-tech.org/api/Harp.Behavior.html)
+
+### Tutorials
+
+- [Using the Bonsai.Harp packages](https://harp-tech.org/articles/intro.html)
 - [Python data interface](https://harp-tech.org/articles/python.html)
 - [AIND Harp devices](https://allenneuraldynamics.github.io/Bonsai.AllenNeuralDynamics/harp_devices_spec/Harp_LicketySplit.html)
-- [Bonsai documentation](https://bonsai-rx.org/docs/articles/observables.html)
-- [Q&A, community, forum](https://github.com/orgs/harp-tech/discussions)
+- Using [Harp.HobGoblin](https://harp-tech.org/tutorials/hobgoblin-setup.html)
+
