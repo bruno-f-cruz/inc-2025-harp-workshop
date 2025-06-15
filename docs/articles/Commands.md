@@ -47,8 +47,8 @@ While we know that the state of the line `DO3` is changing, we do not have acces
 - Subscribe to the `BehaviorEvents` stream.
 - Add a `Parse(Harp.Behavior)` operator and set the `Register` to `TimestampedOutputSet`.
 - Expose the `Value` and `Seconds` members of the output structure.
-- Add a `BitwiseAnd(DO3)` and a `GreaterThan(0)` operator, after `Value` to extract the state of the line `DO3`.
-- Add a `Condition` operator to only allow `True` values to pass through (since we are only interested in changes of `DO3`).
+- Add a `HasValue(DO3)` after `Value` to extract the state of the line `DO3`.
+- Add a `Condition` operator to only allow `True` values to be propagated.
 - Recover the initial timestamp of the message by using a `WithLatestFrom` operator connecting the output of `Condition` and `Seconds`.
 
 :::workflow
@@ -91,38 +91,3 @@ In some cases, you may want to reset the device to its initial known state. The 
 :::workflow
 ![ResetDevice](~/workflows/ResetDevice.bonsai)
 :::
-
-## Benchmarking round-trip time
-
-As a final example, we will show how to measure the [round-trip time](https://en.wikipedia.org/wiki/Round-trip_delay) of a message sent to the device. This is useful to understand the latency of the closed-loop system and to ensure that the system is running as expected. The idea is to send a message to set the state of a digital output line, wait for the reply (t1) message, and invert the state of the line once this message is received, once again waiting for the second, corresponding, reply (t2). By calculating t2-t1, we will have the time it takes for a message to be sent from the device, processed by the computer and received again by the device:
-
-- Connect `DO3` to `DI3` with a jumper cable.
-- Read the timestamped values from the `DI3` pin using `DigitalInputState`:
-- Subscribe to the `BehaviorEvents` stream. Add a `Parse(Harp.Behavior)` operator and set the `Register` to `TimestampedDigitalInputState`. Expose the `Value` and `Seconds` members of the output structure.
-- Add a `BitwiseAnd(DI3)` and a `GreaterThan(0)` operator, after `Value` to extract the state of the line `DI3`. Add a `DistinctUntilChanged` operator to only propagate the message if the state of the line of interest changes. Publish this value to a `PublishSubject` named `DI3State`.
-- Recover the timestamp of the message using a `WithLatestFrom` operator connecting the output of `DistinctUntilChanged` and `Seconds`.
-- Add a `Difference` operator to calculate the time between the two messages (i.e. `t2-t1`).
-
-Now that we have the state of the input line, we need a way to close-loop it with the output line.
-
-- Subscribe to the `DI3State` stream;
-- Make two branches from this stream, to set-up a `if-else`-like statement.
-- To the first branch, add a `Condition` that will take care of the case where the state of the input line is `High`. Add a `CreateMessage(Harp.Behavior)` operator and set it to `OutputClearPayload` to turn off the line `DO3`.
-- To the second branch, add a `BitWiseNot` followed by a `Condition` operator to take care of the case where the state of the input line is `Low`. Add a `CreateMessage(Harp.Behavior)` operator and set it to `OutputSetPayload` to turn on the line `DO3`.
-- Join the two branches with a `Merge` operator, and propagate the message to the device using a `MulticastSubject`.
-- Run the workflow and check the output of the `Difference` stream.
-
-:::workflow
-![RoundTripDelayBenchmark](~/workflows/RoundTripDelayBenchmark.bonsai)
-:::
-
-> [!NOTE]
-> The timestamps reported by Harp can be independently validated by probing the digital output line and calculating the time between each toggle. We have done this exercise in the past and found that the timestamps closely match.
-
-![image](~/images/RoundTripDelayBenchmark.png)
-
-|   Source   |Mean[μs]|Std[μs]|Min[μs]|Max[μs]|1%[μs]|99%[μs]|
-|------------|-------:|------:|------:|------:|-----:|------:|
-|Oscilloscope|  1972.1|  174.1|  985.0| 4002.0| 991.0| 2019.0|
-|Harp        |  1972.1|  174.0|  959.9| 4000.2| 991.8| 2016.1|
-|CPU         |  1971.7|  171.9|  576.0| 4057.0|1011.0| 2240.0|
