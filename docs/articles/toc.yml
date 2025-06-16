@@ -6,8 +6,6 @@
     href: ConnectingToDevice.md
   - name: Filtering Messages
     href: FilteringMessages.md
-  - name: Core Registers
-    href: CoreRegisters.md
   - name: Parsing ADC Events
     href: ParsingAnalogEvents.md
   - name: Parsing Digital Inputs Events
