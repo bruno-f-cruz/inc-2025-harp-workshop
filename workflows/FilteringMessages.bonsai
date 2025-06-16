@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<WorkflowBuilder Version="2.9.0"
+                 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                 xmlns:beh="clr-namespace:Harp.Behavior;assembly=Harp.Behavior"
+                 xmlns:harp="clr-namespace:Bonsai.Harp;assembly=Bonsai.Harp"
+                 xmlns="https://bonsai-rx.org/2018/workflow">
+  <Workflow>
+    <Nodes>
+      <Expression xsi:type="SubscribeSubject">
+        <Name>BehaviorEvents</Name>
+      </Expression>
+      <Expression xsi:type="beh:FilterRegister">
+        <harp:FilterType>Include</harp:FilterType>
+        <harp:Register xsi:type="beh:AnalogData" />
+      </Expression>
+    </Nodes>
+    <Edges>
+      <Edge From="0" To="1" Label="Source1" />
+    </Edges>
+  </Workflow>
+</WorkflowBuilder>
