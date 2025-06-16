@@ -13,8 +13,11 @@ pip install harp-python
 ```python
 device = harp.create_reader("./data/MyDevice.harp")
 data = device.DigitalInputState.read()
+data_analog = device.AnalogData.read()
+
+plt.figure()
+plt.plot(data)
+plt.plot(data_analog)
+plt.xlabel("Harp time (s)")
+plt.show()
 ```
-
-## Verify that both behavior boards are synchronizer
-
-- Using the `DigitalInputState` register, parse the value of of the button/switch and verify if both boards are synchronized (i.e. report the same timestamp for the same button press).
