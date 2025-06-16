@@ -11,7 +11,7 @@ While the `AnalogData` is a register that sends periodic message (~1kHz), other 
 - Add a `Parse(Harp.Behavior)` operator
 - Set `Register` to `DigitalInputStatePayload` (You can also use `TimestampedDigitalInputState` if you need the timestamp)
 
-- To extract the state of a specific line, use the `HasValue` operator and set `Value` to the line you want to extract (e.g. `DI3`).
+- To extract the state of a specific line, use the `HasFlag` operator and set `Value` to the line you want to extract (e.g. `DI3`).
 - Because the state of `DigitalInputState` changes when ANY of the lines change, we tend to use the `DistinctUntilChanged` to only propagate the message if the state of the line of interest changes.
 - Finally, to trigger a certain behavior on a specific edge, we add a `Condition` operator to only allow `True` values to pass through. The behavior can easily be inverted by adding a `BitWiseNot` operator before, or inside, the condition operator.
 
